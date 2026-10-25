@@ -1,12 +1,14 @@
 #=============================================
 # TOTP表示ツール
 # 2024/08/28 atirl　作成
-# 2024/08/29 atirl　小型モード追加
-# 2026/10/22 公開用対応（秘密鍵を外部ファイル選択式に）
+# 2024/08/29 小型モード追加（小型から戻すと表示が逆になるが放置）
+# 2026/10/22 秘密鍵を外部ファイル選択式に
+# 2026/10/25 公開用対応(exe化対応、マニュアルとの表記整合性を調整)
 #=============================================
 
 import configparser
 import os
+import sys
 import random
 import time
 import tkinter as tk
@@ -15,7 +17,14 @@ from tkinter import filedialog, messagebox, ttk
 import pyotp
 import pyperclip
 
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
+#ディレクトリ設定
+if getattr(sys, "frozen", False):
+    #.exe
+    APP_DIR = os.path.dirname(sys.executable)
+else:
+    #.py
+    APP_DIR = os.path.dirname(os.path.abspath(__file__))
+
 CONFIG_PATH = os.path.join(APP_DIR, "config.txt")
 
 def load_config():

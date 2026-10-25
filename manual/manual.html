@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>TotpHyoujer 操作マニュアル</title>
+</head>
+<body>
+  <h1>TotpHyoujer 操作マニュアル</h1>
+<h2>0. 事前準備</h2>
+<p>
+  ログインに使用するQRコードを用意し、テキスト化してください。<br>
+QRコードのテキスト化は、QRコードをwebツールにアップロードしても変換可能ですが、秘密鍵ファイルですので、QrDecoderなどオフラインでの変換を推奨します。<br>
+<a href="https://github.com/atirl/QrDecoder" target="_blank">https://github.com/atirl/QrDecoder</a>
+</p>
+  <h2>1. アプリケーションの起動</h2>
+  <p>READMEに従って本アプリケーションを起動してください。</p>
+
+  <h2>2. 初期状態の画面</h2>
+  <p>
+    <img src="./default.png" alt="初期状態の画面" style="max-width: 100%; height: auto;">
+  </p>
+  <p>
+    初期状態では、鍵が設定されていないため上記のような画面になります。<br>
+    赤○の <strong>[設定]</strong> ボタンをクリックしてください。
+  </p>
+
+  <h2>3. 設定画面</h2>
+  <p>
+    <img src="./config.png" alt="設定画面" style="max-width: 100%; height: auto;">
+  </p>
+  <p>
+    <strong>ウインドウ名：</strong> 接続先の名前を入れると分かりやすいです。<br>
+    <strong>秘密鍵のパス：</strong> 秘密鍵のファイルを指定してください。
+  </p>
+  <p> 
+    [保存]ボタンで、当ツール(TotpHyoujer.pyまたはTotpHyoujer.exe)と同じフォルダに <code>config.txt</code> として保存して設定画面を終了します。
+    保存せずに今回の起動に反映させたい場合は[OK]ボタンを押下してください。
+  </p>
+
+  <h2>4. 設定後の画面</h2>
+  <p>
+    <img src="./after.png" alt="設定後の画面" style="max-width: 100%; height: auto;">
+  </p>
+  <p>
+    上記のように6桁のコードが表示され、ウインドウタイトルが赤○で囲ったように変更されます。
+  </p>
+
+  <p>
+    以上で初期設定は完了です。<br>
+    次回起動時から同じフォルダにある <code>config.txt</code> が自動的に読み込まれます。<br>
+    複数の接続先を表示させたい場合は、フォルダごとコピーして別フォルダで新たなコンフィグを設定してください。
+  </p>
+</body>
+</html>
