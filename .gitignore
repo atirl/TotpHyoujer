@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+nuitka_env/
+pyinst_env/
+test/
+process/
