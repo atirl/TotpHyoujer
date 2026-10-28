@@ -4,6 +4,7 @@
 # 2024/08/29 小型モード追加（小型から戻すと表示が逆になるが放置）
 # 2026/10/22 秘密鍵を外部ファイル選択式に
 # 2026/10/25 公開用対応(exe化対応、マニュアルとの表記整合性を調整)
+# 2026/10/28 大小切り替え時の表示不具合を修正(若干切り替えがぎこちない気がするが)
 #=============================================
 
 import configparser
@@ -68,7 +69,7 @@ class TOTPViewer:
             os.path.join(os.path.dirname(__file__), "blue.ico")
         )
         self.window.title(self.title_text if self.title_text else "Verification Code")
-        self.window.geometry("300x180")
+        self.window.geometry("300x190")
         self.window.resizable(False, False)
 
         # 画面中央に配置
@@ -206,15 +207,25 @@ class TOTPViewer:
         """小型/通常モードの切り替え"""
         if self.is_compact:
             self.is_compact = False
-            self.window.geometry("300x180")
+            self.window.geometry("300x190")
             self.window.attributes("-topmost", False)
 
+            #配置をいったん消す
+            self.title_label.pack_forget()
+            self.code_label.pack_forget()
+            self.canvas.pack_forget()
+            self.btn_frame_normal.pack_forget()
             self.btn_frame_compact.pack_forget()
+
+            #フォントを通常サイズに戻す
             self.code_label.config(font=("Consolas", 36, "bold"))
 
+            #表示順を修正
             self.title_label.pack(pady=(18, 4))
+            self.code_label.pack()
             self.canvas.pack(pady=(8, 0))
             self.btn_frame_normal.pack(pady=(10, 0))
+
         else:
             self.is_compact = True
             self.window.geometry("200x70")
@@ -228,23 +239,37 @@ class TOTPViewer:
             self.btn_frame_compact.pack(pady=(5, 5))
 
     def update_code(self):
-        if self.totp is None:
-            self.current_code = ""
-            self.code_var.set("鍵ファイルを確認してください")
-            self.code_label.config(font=("Meiryo", 14, "bold"))
-        else:
-            try:
-                new_code = self.totp.now()
-                self.current_code = new_code
-                self.code_var.set(new_code)
-                self.code_label.config(font=("Consolas", 36, "bold"))
-            except Exception:
-                self.totp = None
-                self.current_code = ""
-                self.code_var.set("鍵ファイルを確認してください")
-                self.code_label.config(font=("Meiryo", 14, "bold"))
-
-        self.after_id = self.window.after(1000, self.update_code)
+        if self.totp is None: 
+            self.current_code = "" 
+            self.code_var.set("鍵ファイルを確認してください") 
+ 
+            if self.is_compact: 
+                self.code_label.config(font=("Meiryo", 9, "bold")) 
+            else: 
+                self.code_label.config(font=("Meiryo", 14, "bold")) 
+ 
+        else: 
+            try: 
+                new_code = self.totp.now() 
+                self.current_code = new_code 
+                self.code_var.set(new_code) 
+ 
+                if self.is_compact: 
+                    self.code_label.config(font=("Consolas", 18, "bold")) 
+                else: 
+                    self.code_label.config(font=("Consolas", 36, "bold")) 
+ 
+            except Exception: 
+                self.totp = None 
+                self.current_code = "" 
+                self.code_var.set("鍵ファイルを確認してください") 
+ 
+                if self.is_compact: 
+                    self.code_label.config(font=("Meiryo", 9, "bold")) 
+                else: 
+                    self.code_label.config(font=("Meiryo", 14, "bold")) 
+ 
+        self.after_id = self.window.after(1000, self.update_code) 
 
     def update_bar(self):
         # 小型モード時はバー更新をスキップ
